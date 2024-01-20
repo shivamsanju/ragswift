@@ -1,0 +1,33 @@
+# General Dependencies
+requests
+python-dotenv
+
+# Logging and Utilities
+loguru
+
+# RAG
+llama-index
+qdrant_client
+transformers
+sentence-transformers
+stop-words
+
+# Reader Handling
+pypdf
+pyarrow
+Jinja2
+Pillow
+wikipedia
+nbconvert
+
+# Data Validation
+pydantic
+pydantic-settings
+
+# Ray serve
+ray
+ray[default]
+aiorwlock
+watchfiles
+fastapi==0.104.1
+uvicorn

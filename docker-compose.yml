@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  qdrant:
+    container_name: qdrant
+    image: "qdrant/qdrant:latest"
+    ports:
+      - "${QDRANT_PORT}:6333"
+      - "${QDRANT_GRPC_PORT}:6334"
+    environment:
+      API_KEY: ${QDRANT_API_KEY}
+    volumes:
+      - ./.etc/qdrant_storage:/qdrant/storage:z
+    restart: unless-stopped
+    healthcheck:
+      # test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      test: ["CMD", "true"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  backend:
+    build:
+      context: ./
+    ports:
+      - "8000:8000"
+      - "8265:8265"
+    environment:
+      LOGURU_COLORIZE: "true"
+      ENV: "docker"
+    volumes:
+      - ./.etc/llama_index/:/tmp/llama_index/
+      - ./.etc/nltk/:/root/nltk_data/
+      - ./.etc/ray/:/tmp/ray/
+    depends_on:
+      qdrant:
+        condition: service_healthy

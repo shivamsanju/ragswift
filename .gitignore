@@ -1,0 +1,72 @@
+ray_storage/
+server/config.yaml
+test/ 
+deploy/
+
+# Local Dev
+.sql/
+.test/
+.dev/
+.venv/
+.old/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+/.venv/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Docker data
+.etc/
+
+# Compiled Python files
+*.pyc
+
+# Compiled source
+__pycache__/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+
+# Visual Studio Code
+.vscode/

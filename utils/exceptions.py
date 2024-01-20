@@ -1,0 +1,2 @@
+class UnsupportedReaderError(Exception):
+    pass
