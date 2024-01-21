@@ -1,4 +1,4 @@
-# RAG Framework for Scalable Document Ingestion and Retrieval
+# 🚀 RAG Framework for Scalable Document Ingestion and Retrieval
 
 ## Overview
 
@@ -6,24 +6,23 @@ Welcome to the RAG Framework, a cutting-edge solution designed for scalable docu
 
 ## Key Features
 
-### 1. Distributed Computing with Ray
+### 1. Distributed Computing with Ray 🌐
 
 The RAG Framework employs Ray for distributed computing, enabling parallel document ingestion across multiple CPU and GPU nodes. This ensures optimal utilization of resources for efficient and scalable processing.
 
-### 2. Qdrant Disk-Based Indexing
+### 2. Qdrant Disk-Based Indexing 💽
 
 To support the scale of billions of vectors, the framework integrates Qdrant disk-based indexing. This technology provides high-performance indexing capabilities, facilitating rapid and precise retrieval of relevant information.
 
-### 3. REST APIs for Seamless Integration
+### 3. REST APIs for Seamless Integration 🔄
 
 RAG Framework offers REST APIs for convenient asset ingestion from popular sources such as S3 and GitHub. The APIs are also designed for efficient retrieval, ensuring a smooth and seamless integration into your existing workflows.
 
-### 4. Ray Serve for API Scalability
+### 4. Ray Serve for API Scalability ⚙️
 
 REST APIs are served using Ray Serve, allowing for easy scalability across multiple GPU and CPU nodes. This ensures that the framework adapts to the demands of your application, providing consistent performance even in dynamic environments.
 
-### 5. Configurability at Your Fingertips
-
+### 5. Configurability at Your Fingertips 🛠️
 The RAG Framework is highly configurable, allowing users to tailor the system to their specific needs. Key configuration options include the number of CPUs/GPUs to use, the choice of embedding model, chunk size, reranker model, and more.
 
 ## Getting Started using docker
