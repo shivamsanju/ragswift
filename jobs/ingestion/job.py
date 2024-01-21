@@ -1,20 +1,21 @@
+import argparse
 import json
 import uuid
-from typing import List
-import argparse
+from typing import List, Union
+
 import ray
 from llama_index.text_splitter import CodeSplitter, SentenceSplitter
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from qdrant_client.http.exceptions import UnexpectedResponse
+from sentence_transformers import SentenceTransformer
 from stop_words import get_stop_words
 from tqdm import tqdm
 from transformers import AutoModel
-from sentence_transformers import SentenceTransformer
 
-from jobs.ingestion.reader import get_reader
-from schema.base import Chunk, Document, IngestionPayload
 from jobs.batcher import run_actor_paralelly
+from jobs.ingestion.reader import get_reader
+from schema.base import Chunk, Document, GithubIngestionPayload, S3IngestionPayload
 from settings import settings
 
 
@@ -26,7 +27,7 @@ class Reader:
     def __init__(self):
         pass
 
-    def read_docs(self, payload: IngestionPayload):
+    def read_docs(self, payload: Union[GithubIngestionPayload, S3IngestionPayload]):
         reader = get_reader(
             asset_type=payload.asset_type,
             asset_id=payload.asset_id,
@@ -171,7 +172,7 @@ class VectorStoreClient:
         self.vectorstore_client = QdrantClient(
             url=settings.QDRANT_BASE_URI,
             api_key=settings.QDRANT_API_KEY,
-            https=True,
+            https=False,
         )
         self._dim = settings.EMBEDDING_DIMENSION
         self._collection_name = settings.VECTOR_DB_COLLECTION_NAME
@@ -241,7 +242,7 @@ def with_tqdm_iterator(obj_ids):
 # However, the actual CPU utilization is not controlled or limited by Ray, so the task or actor could still use CPU
 # resources when it runs.
 @ray.remote(num_cpus=0.25)
-def ingest_asset(payload: IngestionPayload):
+def ingest_asset(payload: Union[GithubIngestionPayload, S3IngestionPayload]):
     NUM_WORKERS = settings.INGESTION_WORKERS_PER_JOB
 
     # Read documents
@@ -290,7 +291,14 @@ if __name__ == "__main__":
     parser.add_argument("--payload", required=True, help="JSON payload as a string")
 
     args = parser.parse_args()
-    payload_model = IngestionPayload.model_validate(json.loads(args.payload))
+    payload_dict = json.loads(args.payload)
+    payload_model = None
+    if payload_dict.get("asset_type") == "github":
+        payload_model = GithubIngestionPayload.model_validate(payload_dict)
+    elif payload_dict.get("asset_type") == "s3":
+        payload_model = S3IngestionPayload.model_validate(payload_dict)
+    else:
+        print("Invalid asset type")
     obj = ingest_asset.remote(payload_model)
     result = ray.get(obj)
     print("Ingestion job result:", result)

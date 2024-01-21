@@ -10,8 +10,9 @@ services:
     environment:
       API_KEY: ${QDRANT_API_KEY}
     volumes:
-      - ./.etc/qdrant_storage:/qdrant/storage:z
+      - /tmp/docker/qdrant_storage:/qdrant/storage:z
     restart: unless-stopped
+    network_mode: 'host'
     healthcheck:
       # test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
       test: ["CMD", "true"]
@@ -20,18 +21,17 @@ services:
       retries: 3
 
   backend:
-    build:
-      context: ./
+    build: .
     ports:
-      - "8000:8000"
-      - "8265:8265"
+      - "5005:5005"
     environment:
       LOGURU_COLORIZE: "true"
       ENV: "docker"
     volumes:
-      - ./.etc/llama_index/:/tmp/llama_index/
-      - ./.etc/nltk/:/root/nltk_data/
-      - ./.etc/ray/:/tmp/ray/
+      - /tmp/docker/llama_index/:/tmp/llama_index/
+      - /tmp/docker/nltk/:/root/nltk_data/
+      - /tmp/docker/ray/:/tmp/ray/
+    network_mode: 'host'
     depends_on:
       qdrant:
         condition: service_healthy

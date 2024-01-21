@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL: str = "BAAI/bge-small-en-v1.5"
     USE_SENTENCE_TRANSFORMERS: bool = True
     EMBEDDING_DIMENSION: int = 384
-    CHUNK_SIZE: int = 1000
+    CHUNK_SIZE: int = 300
     CHUNK_OVERLAP: int = 100
     RERANKER_MODEL: str = "cross-encoder/ms-marco-TinyBERT-L-2-v2"
 

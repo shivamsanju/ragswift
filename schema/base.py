@@ -66,6 +66,22 @@ class IngestionPayload(BaseModel):
         return value
 
 
+class GithubIngestionPayload(BaseModel):
+    asset_type: Literal["github"] = "github"
+    asset_id: str
+    owner: str
+    reader_kwargs: GithubReader
+    extra_metadata: Dict[str, Any] = {}
+
+
+class S3IngestionPayload(BaseModel):
+    asset_type: Literal["s3"] = "s3"
+    asset_id: str
+    owner: str
+    reader_kwargs: S3Reader
+    extra_metadata: Dict[str, Any] = {}
+
+
 class RetrievalPayload(BaseModel):
     query: str
     asset_ids: List[str]

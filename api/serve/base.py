@@ -7,10 +7,9 @@ from sentence_transformers import CrossEncoder
 from stop_words import get_stop_words
 from transformers import AutoModel
 
+from api.fastapi.base import app
 from schema.base import Context, RetrievalPayload
 from settings import settings
-
-from api.fastapi.base import app
 
 
 @serve.deployment()

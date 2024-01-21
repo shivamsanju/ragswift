@@ -22,3 +22,12 @@ class InterceptHandler(logging.Handler):
 
 
 logging.basicConfig(handlers=[InterceptHandler()], level=logging.INFO)
+
+
+ray_logger = logging.getLogger("ray")
+ray_serve_logger = logging.getLogger("ray.serve")
+
+ray_logger.setLevel(logging.WARNING)
+ray_serve_logger.setLevel(logging.WARNING)
+ray_logger.addHandler(InterceptHandler())
+ray_serve_logger.addHandler(InterceptHandler())

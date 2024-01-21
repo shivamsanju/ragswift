@@ -2,22 +2,30 @@ import uuid
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Literal
 
-from constants import READ_SUCCESSFULLY
-from schema.base import Document
-
+from llama_hub.s3 import S3Reader
 from llama_index.readers import GithubRepositoryReader
 from pydantic import BaseModel
 
+from constants import READ_SUCCESSFULLY
+from schema.base import Document
 
-class GithubReader(BaseModel):
+
+class GithubReaderKwargs(BaseModel):
     owner: str
     repo: str
     branch: str = "main"
     github_token: str
 
 
+class S3ReaderKwargs(BaseModel):
+    bucket_name: str
+    access_key: str
+    secret_key: str
+    endpoint: str = None
+
+
 AllowedAssetTypes = Literal["github", "s3"]
-AllowedReaderKwargs = GithubReader
+AllowedReaderKwargs = GithubReaderKwargs
 
 
 class BaseReader(ABC):
@@ -69,7 +77,7 @@ class GitHubReader(BaseReader):
         self,
         asset_id: str,
         owner: str,
-        kwargs: GithubReader,
+        kwargs: GithubReaderKwargs,
         extra_metadata: Dict[str, Any] = {},
     ):
         super().__init__(asset_id, owner, extra_metadata)
@@ -82,6 +90,26 @@ class GitHubReader(BaseReader):
         return self.reader.load_data(branch=self.branch)
 
 
+class S3ContainerReader(BaseReader):
+    def __init__(
+        self,
+        asset_id: str,
+        owner: str,
+        kwargs: S3ReaderKwargs,
+        extra_metadata: Dict[str, Any] = {},
+    ):
+        super().__init__(asset_id, owner, extra_metadata)
+        self.reader = S3Reader(
+            bucket=kwargs.bucket_name,
+            aws_access_id=kwargs.access_key,
+            aws_access_secret=kwargs.secret_key,
+            s3_endpoint_url=kwargs.endpoint,
+        )
+
+    def _load(self):
+        return self.reader.load_data()
+
+
 def get_reader(
     asset_type: AllowedAssetTypes,
     asset_id: str,
@@ -91,5 +119,7 @@ def get_reader(
 ) -> BaseReader:
     if asset_type == "github":
         return GitHubReader(asset_id, owner, kwargs, extra_metadata)
+    elif asset_type == "s3":
+        return S3ContainerReader(asset_id, owner, kwargs, extra_metadata)
     else:
         raise ValueError(f"Asset type {asset_type} is not supported")
