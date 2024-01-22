@@ -1,14 +1,27 @@
-# 🚀 RAG Framework for Scalable Document Ingestion and Retrieval
+# 🚀 Ragswift - Empowering Scalable RAG Framework for Effortless Document Ingestion and Retrieval at Scale
 
-## Overview
+## 🔗 Overview
 
-Welcome to the RAG Framework, a cutting-edge solution designed for scalable document ingestion and retrieval. Leveraging distributed computing with Ray, this framework empowers users to seamlessly process vast amounts of documents in parallel across multiple CPU and GPU nodes. The inclusion of Qdrant disk-based indexing ensures support for the scale of billions of vectors, making it a robust choice for large-scale applications.
+Ragswift is an advanced RAG framework meticulously crafted for the efficient handling of extensive document ingestion and retrieval tasks. Eliminate concerns associated with document management within your RAG pipeline, as this scalable solution allows for seamless self-hosting, enabling centralized control and sharing of embeddings.
 
-## Demo
+It harnesses the power of distributed computing through Ray, empowering users to effortlessly process vast document sets in parallel across multiple CPU and GPU nodes. The incorporation of Qdrant disk-based indexing and storage guarantees robust support for the scale of billions of vectors, positioning Ragswift as a formidable choice for large-scale applications.
+
+Moreover, Ragswift will soon feature compute autoscaling capabilities using kubernetes, ensuring that you only pay for the compute resources you use. This cost-efficient model enhances the platform's flexibility, allowing users to scale their infrastructure dynamically in response to varying workloads, optimizing both performance and cost-effectiveness.
+
+## 🔗 Getting Started (Docker)
+
+Follow these steps to get started with the RAG Framework:
+
+1. Clone the repository
+2. Configure your settings: Edit the configuration file (.env) to customize the framework based on your requirements. The sample .env is given in .env.example
+3. Run using docker: `docker compose up`
+4. The api docs will be availaible at `http://localhost:5005/docs`
+
+## 🔗 Demo
 
 https://github.com/shivamsanju/ragswift/assets/103770073/ed55385f-8dba-446d-a5a6-9f447b1c0209
 
-## Key Features
+## 🔗 Key Features
 
 ### 1. Distributed Computing with Ray 🌐
 
@@ -29,15 +42,8 @@ REST APIs are served using Ray Serve, allowing for easy scalability across multi
 ### 5. Configurability at Your Fingertips 🛠️
 The RAG Framework is highly configurable, allowing users to tailor the system to their specific needs. Key configuration options include the number of CPUs/GPUs to use, the choice of embedding model, chunk size, reranker model, and more.
 
-## Getting Started using docker
 
-Follow these steps to get started with the RAG Framework:
-
-1. Clone the repository
-2. Configure your settings: Edit the configuration file (.env) to customize the framework based on your requirements. The sample .env is given in .env.example
-3. Run using docker: `docker compose up`
-
-## Upcoming Features
+## 🔗 Upcoming Features
 
 - [ ] **Autoscaled Deployment on Kubernetes**
   - Implement autoscaling mechanisms on Kubernetes for optimized deployment costs and efficient resource usage.
