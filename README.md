@@ -4,6 +4,10 @@
 
 Welcome to the RAG Framework, a cutting-edge solution designed for scalable document ingestion and retrieval. Leveraging distributed computing with Ray, this framework empowers users to seamlessly process vast amounts of documents in parallel across multiple CPU and GPU nodes. The inclusion of Qdrant disk-based indexing ensures support for the scale of billions of vectors, making it a robust choice for large-scale applications.
 
+## Demo
+
+https://github.com/shivamsanju/ragswift/assets/103770073/ed55385f-8dba-446d-a5a6-9f447b1c0209
+
 ## Key Features
 
 ### 1. Distributed Computing with Ray 🌐
