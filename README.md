@@ -46,10 +46,10 @@ Follow these steps to get started with the RAG Framework:
   - Develop a centralized admin UI for seamless management of documents, ingestion jobs, and infrastructure.
 
 - [ ] **Configurable Projects with Embedding Dimension Models**
-  - Enable configurable projects with the flexibility to experiment with different embedding dimension models within a single deployment.
+  - Enable configurable projects with the flexibility to experiment with different embedding dimension, chunk size, embedding models etc within a single deployment.
 
 - [ ] **Observability Tool**
-  - Integrate an observability tool to compare the performance of embedding models across various parameters, facilitating data-driven decision-making.
+  - Integrate an observability tool to compare the performance of embeddings across various parameters, to improve the quality of embeddings backed by experiments.
 
 - [ ] **Access Management**
   - Introduce access management features to enhance security and control over document access, catering to different user roles.
