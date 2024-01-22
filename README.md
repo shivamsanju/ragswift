@@ -1,8 +1,8 @@
-# 🚀 Ragswift - Empowering Scalable RAG Framework for Effortless Document Ingestion and Retrieval at Scale
+# 🚀 Ragswift - A scalable centralized embeddings store for efficient embedding and retrieval to build RAG applications faster
 
 ## 🔗 Overview
 
-Ragswift, an advanced RAG framework designed to make document ingestion and retrieval tasks a breeze at scale and allow you to build RAG apps faster. It eliminates the concerns associated with embeddings management within your RAG pipeline, you can just self host the solution and manage embeddings across multiple apps from a single place.
+Ragswift, a scalable centralized embeddings store, built to effortlessly handle document ingestion, storage and retrieval tasks at scale. Accelerate the development of RAG applications with ease. It eliminates the concerns associated with embeddings management within your RAG pipeline, you can just self host the solution and manage embeddings across multiple apps from a single place.
 
 It harnesses the power of distributed computing through Ray, empowering users to effortlessly process vast document sets in parallel across multiple CPU and GPU nodes. The incorporation of Qdrant disk-based indexing and storage guarantees robust support for the scale of billions of vectors, positioning Ragswift as a formidable choice for large-scale applications.
 
