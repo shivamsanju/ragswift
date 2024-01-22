@@ -37,3 +37,20 @@ Follow these steps to get started with the RAG Framework:
 2. Configure your settings: Edit the configuration file (.env) to customize the framework based on your requirements. The sample .env is given in .env.example
 3. Run using docker: `docker compose up`
 
+## Upcoming Features
+
+- [ ] **Autoscaled Deployment on Kubernetes**
+  - Implement autoscaling mechanisms on Kubernetes for optimized deployment costs and efficient resource usage.
+
+- [ ] **Admin UI for Document Management**
+  - Develop a centralized admin UI for seamless management of documents, ingestion jobs, and infrastructure.
+
+- [ ] **Configurable Projects with Embedding Dimension Models**
+  - Enable configurable projects with the flexibility to experiment with different embedding dimension models within a single deployment.
+
+- [ ] **Observability Tool**
+  - Integrate an observability tool to compare the performance of embedding models across various parameters, facilitating data-driven decision-making.
+
+- [ ] **Access Management**
+  - Introduce access management features to enhance security and control over document access, catering to different user roles.
+
