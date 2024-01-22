@@ -2,11 +2,13 @@
 
 ## 🔗 Overview
 
-Ragswift is an advanced RAG framework meticulously crafted for the efficient handling of extensive document ingestion and retrieval tasks. Eliminate concerns associated with document management within your RAG pipeline, as this scalable solution allows for seamless self-hosting, enabling centralized control and sharing of embeddings.
+Ragswift, an advanced RAG framework designed to make document ingestion and retrieval tasks a breeze at scale and allow you to build RAG apps faster. It eliminates the concerns associated with embeddings management within your RAG pipeline, you can just self host the solution and manage embeddings across multiple apps from a single place.
 
 It harnesses the power of distributed computing through Ray, empowering users to effortlessly process vast document sets in parallel across multiple CPU and GPU nodes. The incorporation of Qdrant disk-based indexing and storage guarantees robust support for the scale of billions of vectors, positioning Ragswift as a formidable choice for large-scale applications.
 
 Moreover, Ragswift will soon feature compute autoscaling capabilities using kubernetes, ensuring that you only pay for the compute resources you use. This cost-efficient model enhances the platform's flexibility, allowing users to scale their infrastructure dynamically in response to varying workloads, optimizing both performance and cost-effectiveness.
+
+Although the default configuration of ragswift is good enough for most use cases and has features like rerankers and hybrid search for retrieval, but we don't restrict you to use the default settings. Everything in ragswift is configurable and you can experiment to find the best configuration for your use case.
 
 ## 🔗 Getting Started (Docker)
 
