@@ -16,13 +16,19 @@ runtime_dir = os.path.join(current_dir, "runtime")
 
 def create_runtime_files():
     if not os.path.exists(runtime_dir):
-        os.makedirs(runtime_dir, mode=0o777, exist_ok=True)
-        shutil.copytree("jobs", os.path.join(runtime_dir, os.path.basename("jobs")))
-        shutil.copytree("schema", os.path.join(runtime_dir, os.path.basename("schema")))
-        shutil.copy("settings.py", runtime_dir)
-        shutil.copy("constants.py", runtime_dir)
-        shutil.copy(".env", runtime_dir)
-        print("Runtime files copied successfully.")
+    files_to_copy = ["settings.py", "constants.py", ".env"]
+    folders_to_copy = ["jobs", "schema"]
+    try:
+        for folder in folders_to_copy:
+            dest_path = os.path.join(runtime_dir, os.path.basename(folder))
+            shutil.copytree(folder, dest_path)
+
+        for file_path in files_to_copy:
+            dest_path = os.path.join(runtime_dir, os.path.basename(file_path))
+            shutil.copy(file_path, dest_path)
+
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
 
 
 @router.post("/github")
