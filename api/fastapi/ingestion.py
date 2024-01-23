@@ -36,7 +36,7 @@ async def submit_github_ingestion_job(payload: GithubIngestionPayload):
     client = JobSubmissionClient(settings.RAY_DASHBOARD_ADDRESS)
     job_id = client.submit_job(
         entrypoint=f"python -m jobs.ingestion.job --payload '{payload.model_dump_json()}'",
-        runtime_env={"working_dir": runtime_dir},
+        runtime_env={"working_dir": runtime_dir, "pip": ["llama-hub"]},
     )
     return JSONResponse(status_code=200, content={"job_id": job_id})
 
@@ -47,7 +47,7 @@ async def submit_s3_ingestion_job(payload: S3IngestionPayload):
     client = JobSubmissionClient(settings.RAY_DASHBOARD_ADDRESS)
     job_id = client.submit_job(
         entrypoint=f"python -m jobs.ingestion.job --payload '{payload.model_dump_json()}'",
-        runtime_env={"working_dir": runtime_dir},
+        runtime_env={"working_dir": runtime_dir, "pip": ["llama-hub"]},
     )
     return JSONResponse(status_code=200, content={"job_id": job_id})
 
