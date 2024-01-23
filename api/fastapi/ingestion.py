@@ -9,24 +9,20 @@ from schema.base import GithubIngestionPayload, S3IngestionPayload
 from settings import settings
 
 router = APIRouter()
-runtime_dir = "/app/runtime"
+
+current_dir = os.getcwd()
+runtime_dir = os.path.join(current_dir, "runtime")
 
 
 def create_runtime_files():
     if not os.path.exists(runtime_dir):
-        try:
-            original_umask = os.umask(0)
-            os.makedirs(runtime_dir, mode=0o777, exist_ok=True)
-            shutil.copytree("jobs", os.path.join(runtime_dir, os.path.basename("jobs")))
-            shutil.copytree(
-                "schema", os.path.join(runtime_dir, os.path.basename("schema"))
-            )
-            shutil.copy("settings.py", runtime_dir)
-            shutil.copy("constants.py", runtime_dir)
-            shutil.copy(".env", runtime_dir)
-            print("Runtime files copied successfully.")
-        finally:
-            os.umask(original_umask)
+        os.makedirs(runtime_dir, mode=0o777, exist_ok=True)
+        shutil.copytree("jobs", os.path.join(runtime_dir, os.path.basename("jobs")))
+        shutil.copytree("schema", os.path.join(runtime_dir, os.path.basename("schema")))
+        shutil.copy("settings.py", runtime_dir)
+        shutil.copy("constants.py", runtime_dir)
+        shutil.copy(".env", runtime_dir)
+        print("Runtime files copied successfully.")
 
 
 @router.post("/github")
