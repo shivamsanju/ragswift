@@ -14,13 +14,19 @@ runtime_dir = "/app/runtime"
 
 def create_runtime_files():
     if not os.path.exists(runtime_dir):
-        os.makedirs(runtime_dir, exist_ok=True)
-        shutil.copytree("jobs", os.path.join(runtime_dir, os.path.basename("jobs")))
-        shutil.copytree("schema", os.path.join(runtime_dir, os.path.basename("schema")))
-        shutil.copy("settings.py", runtime_dir)
-        shutil.copy("constants.py", runtime_dir)
-        shutil.copy(".env", runtime_dir)
-        print("Runtime files copied successfully.")
+        try:
+            original_umask = os.umask(0)
+            os.makedirs(runtime_dir, mode=0o777, exist_ok=True)
+            shutil.copytree("jobs", os.path.join(runtime_dir, os.path.basename("jobs")))
+            shutil.copytree(
+                "schema", os.path.join(runtime_dir, os.path.basename("schema"))
+            )
+            shutil.copy("settings.py", runtime_dir)
+            shutil.copy("constants.py", runtime_dir)
+            shutil.copy(".env", runtime_dir)
+            print("Runtime files copied successfully.")
+        finally:
+            os.umask(original_umask)
 
 
 @router.post("/github")
