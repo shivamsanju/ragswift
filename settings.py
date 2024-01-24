@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     EMBEDDING_DIMENSION: int = 768
     CHUNK_SIZE: int = 300
     CHUNK_OVERLAP: int = 100
-    RERANKER_MODEL: str = "BAAI/bge-base-en-v1.5"
+    RERANKER_MODEL: str = "BAAI/bge-reranker-base"
 
     # Vector db config
     VECTOR_DB_COLLECTION_NAME: str = "default"

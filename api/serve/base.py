@@ -4,6 +4,8 @@ from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from ray import serve
 from sentence_transformers import SentenceTransformer
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from stop_words import get_stop_words
 from transformers import AutoModel
 
@@ -17,7 +19,10 @@ from settings import settings
 class ServeDeployment:
     def __init__(self):
         self.stop_words = get_stop_words("en")
-        self.reranker_model = SentenceTransformer(settings.RERANKER_MODEL)
+        self.reranker_model = SentenceTransformer()
+        self.reranker_tokenizer = AutoTokenizer.from_pretrained(settings.RERANKER_MODEL)
+        self.reranker_model = AutoModelForSequenceClassification.from_pretrained(settings.RERANKER_MODEL)
+        self.reranker_model.eval()
         if settings.USE_SENTENCE_TRANSFORMERS:
             self.embedding_model = SentenceTransformer(settings.EMBEDDING_MODEL)
         else:
@@ -78,15 +83,12 @@ class ServeDeployment:
     ) -> List[Context]:
         if len(contexts) == 0:
             return []
-        query_paragraph_pair = [query]
-        context_texts = [context.payload.get("text")) for context in contexts]
-        query_paragraph_pair.extend(context_texts)
+        query_paragraph_pair = [[query, context.payload.get("text")] for context in contexts]
         embeddings = self.reranker_model.encode(sentences, normalize_embeddings=True)
-        scores = []
-        query_emb = embeddings[0]
-        for em in embeddings[1:]:
-            similarity = query_emb @ em
-            scores.append(similarity)
+        with torch.no_grad():
+            inputs = tokenizer(query_paragraph_pair, padding=True, truncation=True, return_tensors='pt', max_length=512)
+            scores = model(**inputs, return_dict=True).logits.view(-1, ).float()
+        scores = scores.tolist()
 
         # Update scores in the ranked_chunks
         relevant_contexts = []
