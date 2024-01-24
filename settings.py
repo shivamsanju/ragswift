@@ -27,12 +27,12 @@ class Settings(BaseSettings):
         return self.MAX_INGESTION_JOB_WORKERS // self.PARALLEL_INGESTION_JOBS
 
     # Model configs
-    EMBEDDING_MODEL: str = "BAAI/bge-small-en-v1.5"
+    EMBEDDING_MODEL: str = "BAAI/bge-base-en-v1.5"
     USE_SENTENCE_TRANSFORMERS: bool = True
-    EMBEDDING_DIMENSION: int = 384
+    EMBEDDING_DIMENSION: int = 768
     CHUNK_SIZE: int = 300
     CHUNK_OVERLAP: int = 100
-    RERANKER_MODEL: str = "cross-encoder/ms-marco-TinyBERT-L-2-v2"
+    RERANKER_MODEL: str = "BAAI/bge-base-en-v1.5"
 
     # Vector db config
     VECTOR_DB_COLLECTION_NAME: str = "default"

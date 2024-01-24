@@ -3,7 +3,7 @@ from typing import List
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from ray import serve
-from sentence_transformers import CrossEncoder, SentenceTransformer
+from sentence_transformers import SentenceTransformer
 from stop_words import get_stop_words
 from transformers import AutoModel
 
@@ -17,7 +17,7 @@ from settings import settings
 class ServeDeployment:
     def __init__(self):
         self.stop_words = get_stop_words("en")
-        self.reranker_model = CrossEncoder(settings.RERANKER_MODEL)
+        self.reranker_model = SentenceTransformer(settings.RERANKER_MODEL)
         if settings.USE_SENTENCE_TRANSFORMERS:
             self.embedding_model = SentenceTransformer(settings.EMBEDDING_MODEL)
         else:
@@ -78,13 +78,15 @@ class ServeDeployment:
     ) -> List[Context]:
         if len(contexts) == 0:
             return []
-        query_paragraph_pairs = [
-            (query, context.payload.get("text")) for context in contexts
-        ]
-        scores = self.reranker_model.predict(
-            query_paragraph_pairs,
-            batch_size=50,
-        )
+        query_paragraph_pair = [query]
+        context_texts = [context.payload.get("text")) for context in contexts]
+        query_paragraph_pair.extend(context_texts)
+        embeddings = self.reranker_model.encode(sentences, normalize_embeddings=True)
+        scores = []
+        query_emb = embeddings[0]
+        for em in embeddings[1:]:
+            similarity = query_emb @ em
+            scores.append(similarity)
 
         # Update scores in the ranked_chunks
         relevant_contexts = []
