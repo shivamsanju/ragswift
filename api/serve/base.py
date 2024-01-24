@@ -19,7 +19,6 @@ from settings import settings
 class ServeDeployment:
     def __init__(self):
         self.stop_words = get_stop_words("en")
-        self.reranker_model = SentenceTransformer()
         self.reranker_tokenizer = AutoTokenizer.from_pretrained(settings.RERANKER_MODEL)
         self.reranker_model = AutoModelForSequenceClassification.from_pretrained(settings.RERANKER_MODEL)
         self.reranker_model.eval()
@@ -84,10 +83,9 @@ class ServeDeployment:
         if len(contexts) == 0:
             return []
         query_paragraph_pair = [[query, context.payload.get("text")] for context in contexts]
-        embeddings = self.reranker_model.encode(sentences, normalize_embeddings=True)
         with torch.no_grad():
-            inputs = tokenizer(query_paragraph_pair, padding=True, truncation=True, return_tensors='pt', max_length=512)
-            scores = model(**inputs, return_dict=True).logits.view(-1, ).float()
+            inputs = self.reranker_tokenizer(query_paragraph_pair, padding=True, truncation=True, return_tensors='pt', max_length=512)
+            scores = self.reranker_model(**inputs, return_dict=True).logits.view(-1, ).float()
         scores = scores.tolist()
 
         # Update scores in the ranked_chunks
