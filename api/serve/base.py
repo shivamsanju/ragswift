@@ -3,7 +3,7 @@ from typing import List
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from ray import serve
-from sentence_transformers import CrossEncoder
+from sentence_transformers import CrossEncoder, SentenceTransformer
 from stop_words import get_stop_words
 from transformers import AutoModel
 
