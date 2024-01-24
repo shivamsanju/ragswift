@@ -18,13 +18,16 @@ class ServeDeployment:
     def __init__(self):
         self.stop_words = get_stop_words("en")
         self.reranker_model = CrossEncoder(settings.RERANKER_MODEL)
-        self.embedding_model = AutoModel.from_pretrained(
-            settings.EMBEDDING_MODEL, trust_remote_code=True
-        )
+        if settings.USE_SENTENCE_TRANSFORMERS:
+            self.embedding_model = SentenceTransformer(settings.EMBEDDING_MODEL)
+        else:
+            self.embedding_model = AutoModel.from_pretrained(
+                settings.EMBEDDING_MODEL, trust_remote_code=True
+            )
         self.vector_store_client = QdrantClient(
             url=settings.QDRANT_BASE_URI,
             api_key=settings.QDRANT_API_KEY,
-            https=False,
+            https=settings.QDRANT_USE_HTTPS,
         )
 
     def _remove_stopwords(self, text: str) -> str:

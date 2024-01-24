@@ -20,7 +20,7 @@ from settings import settings
 
 
 @ray.remote(
-    num_cpus=0.5,
+    num_cpus=1,
     num_gpus=0,
 )
 class Reader:
@@ -40,7 +40,7 @@ class Reader:
 
 
 @ray.remote(
-    num_cpus=0.25,
+    num_cpus=1,
     num_gpus=0,
 )
 class Chunker:
@@ -164,7 +164,7 @@ class Embedder:
 
 
 @ray.remote(
-    num_cpus=0.25,
+    num_cpus=1,
     num_gpus=0,
 )
 class VectorStoreClient:
@@ -172,7 +172,7 @@ class VectorStoreClient:
         self.vectorstore_client = QdrantClient(
             url=settings.QDRANT_BASE_URI,
             api_key=settings.QDRANT_API_KEY,
-            https=False,
+            https=settings.QDRANT_USE_HTTPS,
         )
         self._dim = settings.EMBEDDING_DIMENSION
         self._collection_name = settings.VECTOR_DB_COLLECTION_NAME

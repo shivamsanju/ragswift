@@ -37,6 +37,7 @@ class Settings(BaseSettings):
     # Vector db config
     VECTOR_DB_COLLECTION_NAME: str = "default"
     QDRANT_BASE_URI: str = "172.17.0.1" if ENV == "docker" else "127.0.0.1"
+    QDRANT_USE_HTTPS: bool = False
     QDRANT_API_KEY: str
     QDRANT_PORT: str = "6333"
     QDRANT_GRPC_PORT: str = "6334"
