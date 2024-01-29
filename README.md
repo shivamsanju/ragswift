@@ -1,14 +1,14 @@
-<h1 align="center"> 🚀 Ragswift 🚀 - A scalable centralized embeddings platform for efficient embedding and retrieval to build RAG applications faster</h1>
+<h2 align="center"> 
+  
+  ![Ragswift](https://github.com/shivamsanju/ragswift/assets/103770073/da387e48-d6ac-4df9-8bb3-d14ca70379fd)
+  
+  🚀Ragswift:  A scalable centralized embeddings management platform 🚀
+</h2>
 
 ## 🔗 Overview
 
 Ragswift, a scalable centralized embeddings platform, built to effortlessly handle document ingestion, storage and retrieval tasks at scale. Accelerate the development of RAG applications with ease. It eliminates the concerns associated with embeddings management within your RAG pipeline, you can just self host the solution and manage embeddings across multiple apps from a single place.
-
 It harnesses the power of distributed computing through Ray, empowering users to effortlessly process vast document sets in parallel across multiple CPU and GPU nodes. The incorporation of Qdrant disk-based indexing and storage guarantees robust support for the scale of billions of vectors, positioning Ragswift as a formidable choice for large-scale applications.
-
-Moreover, Ragswift will soon feature compute autoscaling capabilities using kubernetes, ensuring that you only pay for the compute resources you use. This cost-efficient model enhances the platform's flexibility, allowing users to scale their infrastructure dynamically in response to varying workloads, optimizing both performance and cost-effectiveness.
-
-Although the default configuration of ragswift is good enough for most use cases and has features like rerankers and hybrid search for retrieval, but we don't restrict you to use the default settings. Everything in ragswift is configurable and you can experiment to find the best configuration for your use case.
 
 ## 🔗 Getting Started (Docker)
 
@@ -47,7 +47,7 @@ The RAG Framework is highly configurable, allowing users to tailor the system to
 
 ## 🔗 Upcoming Features
 
-- [ ] **Autoscaled Deployment on Kubernetes**
+- [x] **Autoscaled Deployment on Kubernetes**
   - Implement autoscaling mechanisms on Kubernetes for optimized deployment costs and efficient resource usage.
 
 - [ ] **Admin UI for Document Management**
