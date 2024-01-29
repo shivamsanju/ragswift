@@ -1,4 +1,4 @@
-<h1 align="center"> 🚀 Ragswift 🚀 - A scalable centralized embeddings management platform for efficient embedding and retrieval to build RAG applications faster</h1>
+<h1 align="center"> 🚀 Ragswift - A scalable centralized embeddings management platform </h1>
 
 ## 🔗 Overview
 
