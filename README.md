@@ -15,9 +15,10 @@ It harnesses the power of distributed computing through Ray, empowering users to
 Follow these steps to get started with the RAG Framework:
 
 1. Clone the repository
-2. Configure your settings: Edit the configuration file (.env) to customize the framework based on your requirements. The sample .env is given in .env.example
-3. Run using docker: `docker compose up`
-4. The api docs will be availaible at `http://localhost:5005/docs`
+2. The sample .env is given in .env.example file. COpy its contents to a .env file.
+3. Edit the configuration file (.env) to customize the framework based on your requirements.
+4. Run using docker: `docker compose up`
+5. The api docs will be availaible at `http://localhost:5005/docs`
 
 ## 🔗 Demo
 
