@@ -1,0 +1,162 @@
+# Make sure to increase resource requests and limits before using this example in production.
+apiVersion: ray.io/v1
+kind: RayService
+metadata:
+  name: ragswift
+spec:
+  serviceUnhealthySecondThreshold: 900 # Config for the health check threshold for Ray Serve applications. Default value is 900.
+  deploymentUnhealthySecondThreshold: 300 # Config for the health check threshold for Ray dashboard agent. Default value is 300.
+  # serveConfigV2 takes a yaml multi-line scalar, which should be a Ray Serve multi-application config. See https://docs.ray.io/en/latest/serve/multi-app.html.
+  # Only one of serveConfig and serveConfigV2 should be used.
+  serveConfigV2: |
+    applications:
+      - name: ragswift
+        import_path: main:app
+        route_prefix: /
+        runtime_env:
+          working_dir: "https://github.com/shivamsanju/ragswift/archive/refs/heads/main.zip"
+          pip:
+            - requests
+            - python-dotenv
+            - loguru
+            - llama-index==0.8.66
+            - qdrant_client
+            - transformers
+            - sentence-transformers
+            - stop-words
+            - minio==7.1.17
+            - pypdf
+            - pyarrow
+            - Jinja2
+            - Pillow
+            - wikipedia
+            - nbconvert
+            - pydantic==2.5.3
+            - pydantic-settings==2.1.0
+            - fastapi
+            - uvicorn
+        
+        deployments:
+          - name: ServeDeployment
+            autoscaling_config:
+              metrics_interval_s: 0.2
+              min_replicas: 1
+              max_replicas: 2
+              look_back_period_s: 2
+              downscale_delay_s: 5
+              upscale_delay_s: 2
+            graceful_shutdown_timeout_s: 5
+            max_concurrent_queries: 20
+            ray_actor_options:
+              num_cpus: 1
+
+  rayClusterConfig:
+    rayVersion: "2.9.0" # should match the Ray version in the image of the containers
+    enableInTreeAutoscaling: true
+    autoscalerOptions:
+      upscalingMode: Default
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+          ephemeral-storage: "1Gi"
+        requests:
+          cpu: "500m"
+          memory: "512Mi"
+          ephemeral-storage: "1Gi"
+    ######################headGroupSpecs#################################
+    headGroupSpec:
+      # The `rayStartParams` are used to configure the `ray start` command.
+      # See https://github.com/ray-project/kuberay/blob/master/docs/guidance/rayStartParams.md for the default settings of `rayStartParams` in KubeRay.
+      # See https://docs.ray.io/en/latest/cluster/cli.html#ray-start for all available options in `rayStartParams`.
+      rayStartParams:
+        dashboard-host: "0.0.0.0"
+      # pod template
+      template:
+        spec:
+          containers:
+            - name: ray-head
+              image: novacode007/ray-cpu:1.0.0
+              resources:
+                limits:
+                  cpu: "1"
+                  memory: "10Gi"
+                  ephemeral-storage: "30Gi"
+                requests:
+                  cpu: "1"
+                  memory: "10Gi"
+                  ephemeral-storage: "30Gi"
+              env:
+                - name: MAX_INGESTION_JOB_WORKERS
+                  value: "2"
+                - name: PARALLEL_INGESTION_JOBS
+                  value: "1"
+                - name: VECTOR_DB_COLLECTION_NAME
+                  value: "bigmodels"
+                - name: QDRANT_BASE_URI
+                  value: "https://dce864fa-dd89-4f51-88cf-8c0eb885094a.us-east4-0.gcp.cloud.qdrant.io"
+                - name: QDRANT_API_KEY
+                  value: "oc4b9kziV56wDv8mfKX4fPYdFVp1eh_S_x5rcJUbd0bkrjNSRa1bGA"
+                - name: QDRANT_USE_HTTPS
+                  value: "True"
+                - name: ENV
+                  value: development
+              ports:
+                - containerPort: 6379
+                  name: gcs-server
+                - containerPort: 8265 # Ray dashboard
+                  name: dashboard
+                - containerPort: 10001
+                  name: client
+                - containerPort: 8000
+                  name: serve
+    workerGroupSpecs:
+      # the pod replicas in this group typed worker
+      - replicas: 0
+        minReplicas: 1
+        maxReplicas: 3
+        groupName: worker-group
+        # The `rayStartParams` are used to configure the `ray start` command.
+        # See https://github.com/ray-project/kuberay/blob/master/docs/guidance/rayStartParams.md for the default settings of `rayStartParams` in KubeRay.
+        # See https://docs.ray.io/en/latest/cluster/cli.html#ray-start for all available options in `rayStartParams`.
+        rayStartParams: {}
+        # pod template
+        template:
+          spec:
+            containers:
+              - name: ray-worker # must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name',  or '123-abc'
+                image: novacode007/ray-cpu:1.0.0
+                lifecycle:
+                  preStop:
+                    exec:
+                      command: ["/bin/sh", "-c", "ray stop"]
+                resources:
+                  limits:
+                    cpu: "2"
+                    memory: "6Gi"
+                    ephemeral-storage: "15Gi"
+                  requests:
+                    cpu: "2"
+                    memory: "6Gi"
+                    ephemeral-storage: "15Gi"
+                env:
+                  - name: EMBEDDING_MODEL
+                    value: BAAI/bge-base-en-v1.5
+                  - name: USE_SENTENCE_TRANSFORMERS
+                    value: "True"
+                  - name: EMBEDDING_DIMENSION
+                    value: "768"
+                  - name: CHUNK_SIZE
+                    value: "300"
+                  - name: CHUNK_OVERLAP
+                    value: "100"
+                  - name: RAY_ADDRESS
+                    value: "auto"
+                  - name: VECTOR_DB_COLLECTION_NAME
+                    value: "bigmodels"
+                  - name: QDRANT_BASE_URI
+                    value: "Your qdrant uri"
+                  - name: QDRANT_API_KEY
+                    value: "Your qdrant key"
+                  - name: QDRANT_USE_HTTPS
+                    value: "True"
