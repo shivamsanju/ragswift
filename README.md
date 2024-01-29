@@ -1,4 +1,9 @@
-<h1 align="center"> 🚀 Ragswift - A scalable centralized embeddings management platform </h1>
+<h2 align="center"> 
+  
+  ![Ragswift](https://github.com/shivamsanju/ragswift/assets/103770073/da387e48-d6ac-4df9-8bb3-d14ca70379fd)
+  
+  🚀Ragswift:  A scalable centralized embeddings management platform 🚀
+</h2>
 
 ## 🔗 Overview
 
